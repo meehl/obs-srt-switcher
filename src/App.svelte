@@ -8,6 +8,8 @@
     obsDisconnect,
     currentScene,
     scenes,
+    currentCollection,
+    collections,
   } from './obs'
 
   const handleLogin = (event: CustomEvent<ObsLoginInfo>) => {
@@ -22,6 +24,8 @@
     <p>You are connected to OBS</p>
     <p>Current Scene: {$currentScene}</p>
     <p>Scenes: {$scenes.map((s) => s.sceneName).join(', ')}</p>
+    <p>Current Collection: {$currentCollection}</p>
+    <p>Collections: {$collections.join(', ')}</p>
     <button on:click={obsDisconnect}>Disconnect</button>
   {/if}
 </main>

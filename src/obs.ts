@@ -7,6 +7,8 @@ export const obsConnected = writable(false)
 export const obsConnectionError = writable('')
 export const currentScene = writable('')
 export const scenes = writable<ObsScene[]>([])
+export const currentCollection = writable('')
+export const collections = writable<string[]>([])
 
 const autoLogin = async () => {
   const savedLogin = localStorage.getItem('obsLoginInfo')
@@ -43,6 +45,13 @@ obs.on('Identified', () => {
       scenes.set(sceneList.scenes as ObsScene[])
     })
     .catch((e) => console.error(e))
+  obs
+    .call('GetSceneCollectionList')
+    .then((collectionList) => {
+      currentCollection.set(collectionList.currentSceneCollectionName)
+      collections.set(collectionList.sceneCollections)
+    })
+    .catch((e) => console.error(e))
 })
 
 obs.on('CurrentProgramSceneChanged', (event) => {
@@ -61,6 +70,23 @@ obs.on('SceneNameChanged', (event) => {
       return s
     }
   })
+})
+
+obs.on('CurrentSceneCollectionChanged', (event) => {
+  currentCollection.set(event.sceneCollectionName)
+  // SceneListChanged and CurrentProgramSceneChanged are not emitted
+  // on collection change so update manually
+  obs
+    .call('GetSceneList')
+    .then((sceneList) => {
+      currentScene.set(sceneList.currentProgramSceneName)
+      scenes.set(sceneList.scenes as ObsScene[])
+    })
+    .catch((e) => console.error(e))
+})
+
+obs.on('SceneCollectionListChanged', (event) => {
+  collections.set(event.sceneCollections)
 })
 
 export const obsConnect = (loginInfo: ObsLoginInfo) => {
