@@ -23,6 +23,16 @@ const autoLogin = async () => {
 }
 autoLogin()
 
+obs.on('ConnectionClosed', () => {
+  obsConnected.set(false)
+})
+
+obs.on('ConnectionError', (event) => {
+  console.error(event)
+  obsConnected.set(false)
+  obsConnectionError.set(event.message)
+})
+
 export const obsConnect = (loginInfo: ObsLoginInfo) => {
   obs
     .connect(loginInfo.url, loginInfo.password)
