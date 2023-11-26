@@ -3,3 +3,8 @@ export type ObsLoginInfo = {
   password: string
   remember: boolean
 }
+
+export type ObsScene = {
+  sceneName: string
+  sceneIndex: number
+}
