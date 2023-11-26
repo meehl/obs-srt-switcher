@@ -37,7 +37,7 @@ obs.on('ConnectionError', (event) => {
   obsConnectionError.set(event.message)
 })
 
-obs.on('Identified', () => {
+const updateSceneList = () => {
   obs
     .call('GetSceneList')
     .then((sceneList) => {
@@ -45,6 +45,9 @@ obs.on('Identified', () => {
       scenes.set(sceneList.scenes as ObsScene[])
     })
     .catch((e) => console.error(e))
+}
+
+const updateCollectionList = () => {
   obs
     .call('GetSceneCollectionList')
     .then((collectionList) => {
@@ -52,6 +55,11 @@ obs.on('Identified', () => {
       collections.set(collectionList.sceneCollections)
     })
     .catch((e) => console.error(e))
+}
+
+obs.on('Identified', () => {
+  updateSceneList()
+  updateCollectionList()
 })
 
 obs.on('CurrentProgramSceneChanged', (event) => {
@@ -76,13 +84,7 @@ obs.on('CurrentSceneCollectionChanged', (event) => {
   currentCollection.set(event.sceneCollectionName)
   // SceneListChanged and CurrentProgramSceneChanged are not emitted
   // on collection change so update manually
-  obs
-    .call('GetSceneList')
-    .then((sceneList) => {
-      currentScene.set(sceneList.currentProgramSceneName)
-      scenes.set(sceneList.scenes as ObsScene[])
-    })
-    .catch((e) => console.error(e))
+  updateSceneList()
 })
 
 obs.on('SceneCollectionListChanged', (event) => {
