@@ -3,7 +3,7 @@
   import { createEventDispatcher } from 'svelte'
   import { type ObsLoginInfo } from '../types'
 
-  export let obsConnectionError: string
+  export let error: string
 
   const dispatch = createEventDispatcher<{ connect: ObsLoginInfo }>()
 
@@ -44,8 +44,8 @@
   <label for="remember">Remember Login?</label>
   <input type="checkbox" name="remember" />
 
-  {#if obsConnectionError}
-    <p id="connectionerror">{obsConnectionError}</p>
+  {#if error}
+    <p id="connectionerror">{error}</p>
   {/if}
   <button disabled={!$form.valid}>Connect</button>
 </form>

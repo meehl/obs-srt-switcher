@@ -15,7 +15,8 @@
 
 <script lang="ts">
   import ObsLogin from './lib/ObsLogin.svelte'
-  import { type ObsLoginInfo } from './types'
+  import TmiLogin from './lib/TmiLogin.svelte'
+  import { type ObsLoginInfo, type TmiLoginInfo } from './types'
   import {
     obsConnected,
     obsConnectionError,
@@ -26,17 +27,22 @@
     currentCollection,
     collections,
   } from './obs'
+  import { tmiConnected, tmiConnectionError, tmiConnect, tmiDisconnect } from './tmi'
   import SceneSettingsInput from './lib/SceneSettingsInput.svelte'
   import SrtSettingsInput from './lib/SrtSettingsInput.svelte'
 
-  const handleLogin = (event: CustomEvent<ObsLoginInfo>) => {
+  const handleObsLogin = (event: CustomEvent<ObsLoginInfo>) => {
     obsConnect(event.detail)
+  }
+
+  const handleTmiLogin = (event: CustomEvent<TmiLoginInfo>) => {
+    tmiConnect(event.detail)
   }
 </script>
 
 <main>
   {#if !$obsConnected}
-    <ObsLogin obsConnectionError={$obsConnectionError} on:connect={handleLogin} />
+    <ObsLogin error={$obsConnectionError} on:connect={handleObsLogin} />
   {:else}
     <p>You are connected to OBS</p>
     <p>Current Scene: {$currentScene}</p>
@@ -45,6 +51,11 @@
     <p>Collections: {$collections.join(', ')}</p>
     <SceneSettingsInput scenes={$scenes} />
     <SrtSettingsInput />
+    {#if !$tmiConnected}
+      <TmiLogin error={$tmiConnectionError} on:connect={handleTmiLogin} />
+    {:else}
+      <button on:click={tmiDisconnect}>Disconnect</button>
+    {/if}
     <p>{JSON.stringify($srtStats)}</p>
     <button on:click={obsDisconnect}>Disconnect</button>
   {/if}

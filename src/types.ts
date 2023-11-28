@@ -105,3 +105,10 @@ export type SrtSocket = {
   stream_id: string
   stats: SrtStats
 }
+
+export type TmiLoginInfo = {
+  username: string
+  oauthToken: string
+  channel: string
+  remember: boolean
+}
