@@ -112,3 +112,8 @@ export type TmiLoginInfo = {
   channel: string
   remember: boolean
 }
+
+export type BotSettings = {
+  allowModerators: boolean
+  privilegedUsers: string[]
+}

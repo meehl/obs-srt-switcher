@@ -30,6 +30,7 @@
   import { tmiConnected, tmiConnectionError, tmiConnect, tmiDisconnect } from './tmi'
   import SceneSettingsInput from './lib/SceneSettingsInput.svelte'
   import SrtSettingsInput from './lib/SrtSettingsInput.svelte'
+  import BotSettingsInput from './lib/BotSettingsInput.svelte'
 
   const handleObsLogin = (event: CustomEvent<ObsLoginInfo>) => {
     obsConnect(event.detail)
@@ -54,6 +55,7 @@
     {#if !$tmiConnected}
       <TmiLogin error={$tmiConnectionError} on:connect={handleTmiLogin} />
     {:else}
+      <BotSettingsInput />
       <button on:click={tmiDisconnect}>Disconnect</button>
     {/if}
     <p>{JSON.stringify($srtStats)}</p>

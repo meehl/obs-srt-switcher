@@ -1,5 +1,5 @@
 import { writable, get } from 'svelte/store'
-import type { SceneSwitchSettings, SrtSettings } from './types'
+import type { BotSettings, SceneSwitchSettings, SrtSettings } from './types'
 
 export const storedWritable = <T>(key: string, initialValue: T) => {
   const stored = localStorage.getItem(key)
@@ -7,19 +7,16 @@ export const storedWritable = <T>(key: string, initialValue: T) => {
   const w = writable<T>(stored ? JSON.parse(stored) : initialValue)
 
   const set = (...args: Parameters<typeof w.set>) => {
-    console.log(`Settings local store: ${key}`)
     w.set(...args)
     localStorage.setItem(key, JSON.stringify(get(w)))
   }
 
   const update = (...args: Parameters<typeof w.update>) => {
-    console.log(`Updating local store: ${key}`)
     w.update(...args)
     localStorage.setItem(key, JSON.stringify(get(w)))
   }
 
   const clear = () => {
-    console.log(`Clearing local store: ${key}`)
     w.set(initialValue)
     localStorage.removeItem(key)
   }
@@ -44,4 +41,9 @@ export const srtSettings = storedWritable<SrtSettings>('srtSettings', {
   streamUrl: '',
   streamId: 'publish/test',
   pollingInterval: 5000,
+})
+
+export const botSettings = storedWritable<BotSettings>('botSettings', {
+  allowModerators: false,
+  privilegedUsers: [],
 })
