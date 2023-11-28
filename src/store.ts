@@ -1,5 +1,5 @@
 import { writable, get } from 'svelte/store'
-import type { SceneSwitchSettings } from './types'
+import type { SceneSwitchSettings, SrtSettings } from './types'
 
 export const storedWritable = <T>(key: string, initialValue: T) => {
   const stored = localStorage.getItem(key)
@@ -36,4 +36,10 @@ export const sceneSwitchSettings = storedWritable<SceneSwitchSettings>('sceneSwi
   main: 'main',
   lowQuality: 'low_quality',
   brb: 'brb',
+})
+
+export const srtSettings = storedWritable<SrtSettings>('srtSettings', {
+  streamUrl: '',
+  streamId: 'publish/test',
+  pollingInterval: 5000,
 })

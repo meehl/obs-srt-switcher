@@ -11,7 +11,9 @@
     currentCollection,
     collections,
   } from './obs'
-  import SceneSwitcher from './lib/SceneSwitcher.svelte'
+  import SceneSettingsInput from './lib/SceneSettingsInput.svelte'
+  import SrtSettingsInput from './lib/SrtSettingsInput.svelte'
+  import { srtStats } from './srt'
 
   const handleLogin = (event: CustomEvent<ObsLoginInfo>) => {
     obsConnect(event.detail)
@@ -27,7 +29,9 @@
     <p>Scenes: {$scenes.map((s) => s.sceneName).join(', ')}</p>
     <p>Current Collection: {$currentCollection}</p>
     <p>Collections: {$collections.join(', ')}</p>
-    <SceneSwitcher scenes={$scenes} />
+    <SceneSettingsInput scenes={$scenes} />
+    <SrtSettingsInput />
+    <p>{JSON.stringify($srtStats)}</p>
     <button on:click={obsDisconnect}>Disconnect</button>
   {/if}
 </main>

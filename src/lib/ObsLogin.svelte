@@ -15,7 +15,7 @@
     remember: {},
   })
 
-  const formSubmit = async () => {
+  const formSubmit = () => {
     if ($form.valid) {
       const url = `ws://${$form.ip.value}:${$form.port.value}`
       const password = $form.password.value
