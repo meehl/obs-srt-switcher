@@ -21,7 +21,6 @@ const autoLogin = async () => {
       })
       .catch((e) => {
         obsConnectionError.set(e.message || 'Unable to connect to OBS Websocket')
-        localStorage.removeItem('obsLoginInfo')
       })
   }
 }
