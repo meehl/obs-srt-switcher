@@ -13,6 +13,8 @@ export type SceneSwitchSettings = {
   main: string
   lowQuality: string
   brb: string
+  rateThreshold: number
+  rttThreshold: number
 }
 
 export type SrtSettings = {

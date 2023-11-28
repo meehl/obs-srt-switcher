@@ -36,6 +36,8 @@ export const sceneSwitchSettings = storedWritable<SceneSwitchSettings>('sceneSwi
   main: 'main',
   lowQuality: 'low_quality',
   brb: 'brb',
+  rateThreshold: 0.5,
+  rttThreshold: 1000,
 })
 
 export const srtSettings = storedWritable<SrtSettings>('srtSettings', {

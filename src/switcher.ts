@@ -6,7 +6,7 @@ import type { SrtStats } from './types'
 export class Switcher {
   constructor() {}
 
-  handleStats(stats: SrtStats) {
+  handleStats(stats: SrtStats | null) {
     if (!get(obsConnected)) return
 
     const settings = get(sceneSwitchSettings)
@@ -15,6 +15,12 @@ export class Switcher {
 
     if (stats === null) {
       switchTo = settings.brb
+    } else if (stats.MbpsRecvRate < settings.rateThreshold) {
+      console.log(`Low SendRate detected: ${stats.MbpsRecvRate}Mb/s`)
+      switchTo = settings.lowQuality
+    } else if (stats.MsRTT > settings.rttThreshold) {
+      console.log(`High RTT detected: ${stats.MsRTT}ms`)
+      switchTo = settings.lowQuality
     } else {
       switchTo = settings.main
     }
