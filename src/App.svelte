@@ -1,3 +1,18 @@
+<script lang="ts" context="module">
+  import { Switcher } from './switcher'
+  import { srtStats, startPolling } from './srt'
+  import { srtSettings } from './store'
+
+  const switcher = new Switcher()
+  srtStats.subscribe((stats) => {
+    switcher.handleStats(stats)
+  })
+
+  srtSettings.subscribe((settings) => {
+    startPolling(settings)
+  })
+</script>
+
 <script lang="ts">
   import ObsLogin from './lib/ObsLogin.svelte'
   import { type ObsLoginInfo } from './types'
@@ -13,7 +28,6 @@
   } from './obs'
   import SceneSettingsInput from './lib/SceneSettingsInput.svelte'
   import SrtSettingsInput from './lib/SrtSettingsInput.svelte'
-  import { srtStats } from './srt'
 
   const handleLogin = (event: CustomEvent<ObsLoginInfo>) => {
     obsConnect(event.detail)

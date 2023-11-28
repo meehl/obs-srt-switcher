@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store'
+import { writable, get } from 'svelte/store'
 import OBSWebSocket from 'obs-websocket-js'
 import { type ObsScene, type ObsLoginInfo } from './types'
 
@@ -120,4 +120,23 @@ export const obsDisconnect = () => {
     .catch((e) => {
       console.error(e)
     })
+}
+
+export const switchScene = (sceneName: string) => {
+  return new Promise<void>((resolve, reject) => {
+    if (sceneName === get(currentScene)) {
+      resolve()
+    } else {
+      obs
+        .call('SetCurrentProgramScene', { sceneName })
+        .then(() => {
+          console.log(`Switched current scene to ${sceneName}`)
+          resolve()
+        })
+        .catch((e) => {
+          console.error(e)
+          reject(e)
+        })
+    }
+  })
 }
