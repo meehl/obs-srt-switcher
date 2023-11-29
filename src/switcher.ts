@@ -1,7 +1,9 @@
 import { get } from 'svelte/store'
-import { obsConnected, switchScene } from './obs'
-import { sceneSwitchSettings } from './store'
-import type { SrtStats } from './types'
+import { obsConnected, startStream, stopStream, switchScene } from './obs'
+import { botSettings, sceneSwitchSettings } from './store'
+import type { ChatCommand, SrtStats } from './types'
+import { isAllowedToRun } from './utils'
+import { sendMessage } from './tmi'
 
 export class Switcher {
   constructor() {}
@@ -28,5 +30,23 @@ export class Switcher {
     switchScene(switchTo).catch((e) => {
       console.error('Unable to automatically switch scenes! ', e)
     })
+  }
+
+  handleChatCommand(command?: ChatCommand) {
+    if (!command || !isAllowedToRun(command.sender, get(botSettings))) return
+    const channel = command.channel
+
+    switch (command.type) {
+      case 'start':
+        startStream()
+          .then(() => sendMessage(channel, 'Started stream!'))
+          .catch(() => sendMessage(channel, 'Unable to start stream!'))
+        break
+      case 'stop':
+        stopStream()
+          .then(() => sendMessage(channel, 'Stopped stream!'))
+          .catch(() => sendMessage(channel, 'Unable to stop stream!'))
+        break
+    }
   }
 }

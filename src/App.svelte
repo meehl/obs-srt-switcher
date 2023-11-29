@@ -1,11 +1,15 @@
 <script lang="ts" context="module">
   import { Switcher } from './switcher'
   import { srtStats, startPolling } from './srt'
+  import { tmiCommand } from './tmi'
   import { srtSettings } from './store'
 
   const switcher = new Switcher()
   srtStats.subscribe((stats) => {
     switcher.handleStats(stats)
+  })
+  tmiCommand.subscribe((command) => {
+    switcher.handleChatCommand(command)
   })
 
   srtSettings.subscribe((settings) => {

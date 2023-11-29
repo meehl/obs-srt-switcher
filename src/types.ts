@@ -117,3 +117,20 @@ export type BotSettings = {
   allowModerators: boolean
   privilegedUsers: string[]
 }
+
+export type ChatCommandSender = {
+  name: string
+  isBroadcaster: boolean
+  isModerator: boolean
+}
+
+export const commandTypes = ['start', 'stop'] as const
+
+export type ChatCommandType = (typeof commandTypes)[number]
+
+export type ChatCommand = {
+  channel: string
+  sender: ChatCommandSender
+  type: ChatCommandType
+  args: string[]
+}

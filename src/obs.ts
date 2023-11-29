@@ -140,3 +140,11 @@ export const switchScene = (sceneName: string) => {
     }
   })
 }
+
+export const startStream = () => {
+  return obs.call('StartStream')
+}
+
+export const stopStream = () => {
+  return obs.call('StopStream')
+}
