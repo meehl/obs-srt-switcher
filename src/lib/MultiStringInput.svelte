@@ -27,35 +27,33 @@
 
 <style>
   .container {
+    background-color: rgb(60, 64, 75);
     display: flex;
     flex-wrap: wrap;
-    padding-left: 4px;
-    padding-right: 4px;
+    padding: 2px 8px;
     column-gap: 8px;
     align-items: center;
     border-radius: 4px;
   }
   .element {
+    background-color: rgb(43, 46, 56);
     display: inline-block;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding: 0px 8px;
     border-radius: 8px;
   }
   .delete_btn {
+    background-color: rgb(43, 46, 56);
     display: inline-flex;
     border-radius: 9999px;
     cursor: pointer;
     justify-content: center;
     align-items: center;
-    height: 8px;
-    width: 8px;
-    margin-left: 4px;
+    height: 12px;
+    width: 12px;
   }
 
   input {
-    outline: 2px solid transparent;
+    outline: 0px solid transparent;
     outline-offset: 2px;
     margin: 0px;
     padding-top: 8px;

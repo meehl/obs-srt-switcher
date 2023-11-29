@@ -46,12 +46,11 @@
     obsConnectionError,
     obsConnect,
     obsDisconnect,
-    currentScene,
     scenes,
     collections,
   } from './obs'
   import { tmiConnected, tmiConnectionError, tmiConnect, tmiDisconnect } from './tmi'
-  import SceneSettingsInput from './lib/SceneSettingsInput.svelte'
+  import SwitcherSettingsInput from './lib/SwitcherSettingsInput.svelte'
   import SrtSettingsInput from './lib/SrtSettingsInput.svelte'
   import BotSettingsInput from './lib/BotSettingsInput.svelte'
 
@@ -68,23 +67,43 @@
   {#if !$obsConnected}
     <ObsLogin error={$obsConnectionError} on:connect={handleObsLogin} />
   {:else}
-    <p>You are connected to OBS</p>
-    <p>Current Scene: {$currentScene}</p>
-    <p>Scenes: {$scenes.map((s) => s.sceneName).join(', ')}</p>
-    <p>Current Collection: {$currentCollection}</p>
-    <p>Collections: {$collections.join(', ')}</p>
-    <SceneSettingsInput scenes={$scenes} collections={$collections} />
-    <SrtSettingsInput />
-    {#if !$tmiConnected}
-      <TmiLogin error={$tmiConnectionError} on:connect={handleTmiLogin} />
-    {:else}
-      <BotSettingsInput />
-      <button on:click={tmiDisconnect}>Disconnect</button>
-    {/if}
-    <p>{JSON.stringify($srtStats)}</p>
-    <button on:click={obsDisconnect}>Disconnect</button>
+    <details>
+      <summary>Switcher Settings</summary>
+      <SwitcherSettingsInput scenes={$scenes} collections={$collections} />
+    </details>
+    <details>
+      <summary>SRT Settings</summary>
+      <SrtSettingsInput />
+    </details>
+    <details>
+      <summary>Chatbot Settings</summary>
+      {#if !$tmiConnected}
+        <TmiLogin error={$tmiConnectionError} on:connect={handleTmiLogin} />
+      {:else}
+        <BotSettingsInput />
+        <button on:click={tmiDisconnect}>Chat Disconnect</button>
+      {/if}
+    </details>
+    <button on:click={obsDisconnect}>OBS Disconnect</button>
   {/if}
 </main>
 
 <style>
+  main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  details {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.5rem;
+    padding: 4px 2px;
+  }
+
+  details summary {
+    font-size: 13pt;
+    cursor: pointer;
+    margin-bottom: 4px;
+  }
 </style>

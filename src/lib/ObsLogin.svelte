@@ -2,6 +2,7 @@
   import { useForm, Hint, validators, required } from 'svelte-use-form'
   import { createEventDispatcher } from 'svelte'
   import { type ObsLoginInfo } from '../types'
+  import ToggleSwitch from './ToggleSwitch.svelte'
 
   export let error: string
 
@@ -25,7 +26,7 @@
   }
 </script>
 
-<form use:form on:submit|preventDefault={formSubmit}>
+<form use:form on:submit|preventDefault={formSubmit} class="settings">
   <h1>OBS Websocket</h1>
   <p>Password can be found in OBS under Tools -> Websocket Server Settings -> Show Connect Info</p>
 
@@ -42,12 +43,12 @@
   <Hint for="password" on="required">{requiredMessage}</Hint>
 
   <label for="remember">Remember Login?</label>
-  <input type="checkbox" name="remember" />
+  <ToggleSwitch id="remember" name="remember" />
 
   {#if error}
     <p id="connectionerror">{error}</p>
   {/if}
-  <button disabled={!$form.valid}>Connect</button>
+  <button disabled={!$form.valid}>OBS Connect</button>
 </form>
 
 <style>

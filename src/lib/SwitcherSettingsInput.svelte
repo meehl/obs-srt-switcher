@@ -7,7 +7,7 @@
   export let collections: string[]
 </script>
 
-<div>
+<div class="settings">
   <ValueSelect
     label="IRL Collection"
     bind:selectedValue={$sceneSwitchSettings.collection}
@@ -41,4 +41,8 @@
 </div>
 
 <style>
+  div {
+    display: flex;
+    flex-direction: column;
+  }
 </style>

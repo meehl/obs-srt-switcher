@@ -2,7 +2,7 @@
   import { srtSettings } from '../store'
 </script>
 
-<div>
+<div class="settings">
   <label for="streamUrl">Stream URL</label>
   <input type="text" name="streamUrl" bind:value={$srtSettings.streamUrl} />
 
@@ -14,4 +14,8 @@
 </div>
 
 <style>
+  div {
+    display: flex;
+    flex-direction: column;
+  }
 </style>

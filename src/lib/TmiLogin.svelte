@@ -2,6 +2,7 @@
   import { useForm, Hint, validators, required } from 'svelte-use-form'
   import { createEventDispatcher } from 'svelte'
   import { type TmiLoginInfo } from '../types'
+  import ToggleSwitch from './ToggleSwitch.svelte'
 
   export let error: string = ''
 
@@ -26,7 +27,7 @@
   }
 </script>
 
-<form use:form on:submit|preventDefault={formSubmit}>
+<form use:form on:submit|preventDefault={formSubmit} class="settings">
   <label for="username">Username</label>
   <input type="text" name="username" use:validators={[required]} />
   <Hint for="username" on="required">{requiredMessage}</Hint>
@@ -40,12 +41,12 @@
   <Hint for="channel" on="required">{requiredMessage}</Hint>
 
   <label for="remember">Remember Login?</label>
-  <input type="checkbox" name="remember" />
+  <ToggleSwitch id="remember" name="remember" />
 
   {#if error}
     <p id="connectionerror">{error}</p>
   {/if}
-  <button disabled={!$form.valid}>Connect</button>
+  <button disabled={!$form.valid}>Chat Connect</button>
 </form>
 
 <style>
