@@ -14,6 +14,7 @@ import { botSettings, sceneSwitchSettings } from './store'
 import type { ChatCommand, SrtStats } from './types'
 import { isAllowedToRun, parseBoolean, parseNumber } from './utils'
 import { sendMessage } from './tmi'
+import { srtStats } from './srt'
 
 export class Switcher {
   forceBrb: boolean
@@ -143,6 +144,17 @@ export class Switcher {
         } else {
           this.forceBrb = mode
           sendMessage(channel, `Set forceBrb to: ${mode ? 'on' : 'off'}`)
+        }
+        break
+      }
+      case 'stats': {
+        const stats = get(srtStats)
+        if (stats) {
+          const bitrate = stats.MbpsRecvRate.toFixed(2)
+          const rtt = stats.MsRTT.toFixed(2)
+          sendMessage(channel, `Bitrate: ${bitrate}Mb/s | RTT: ${rtt}ms`)
+        } else {
+          sendMessage(channel, 'Stats not available!')
         }
         break
       }
