@@ -30,6 +30,7 @@ export const storedWritable = <T>(key: string, initialValue: T) => {
 }
 
 export const sceneSwitchSettings = storedWritable<SceneSwitchSettings>('sceneSwitchSettings', {
+  collection: '',
   main: 'main',
   lowQuality: 'low_quality',
   brb: 'brb',

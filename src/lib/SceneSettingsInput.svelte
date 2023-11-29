@@ -1,19 +1,33 @@
 <script lang="ts">
   import type { ObsScene } from '../types'
   import { sceneSwitchSettings } from '../store'
-  import SceneSelect from './SceneSelect.svelte'
+  import ValueSelect from './ValueSelect.svelte'
 
   export let scenes: ObsScene[]
+  export let collections: string[]
 </script>
 
 <div>
-  <SceneSelect label="Main Scene" bind:selectedScene={$sceneSwitchSettings.main} {scenes} />
-  <SceneSelect
-    label="Low Quality Scene"
-    bind:selectedScene={$sceneSwitchSettings.lowQuality}
-    {scenes}
+  <ValueSelect
+    label="IRL Collection"
+    bind:selectedValue={$sceneSwitchSettings.collection}
+    values={collections}
   />
-  <SceneSelect label="BRB Scene" bind:selectedScene={$sceneSwitchSettings.brb} {scenes} />
+  <ValueSelect
+    label="Main Scene"
+    bind:selectedValue={$sceneSwitchSettings.main}
+    values={scenes.map((s) => s.sceneName)}
+  />
+  <ValueSelect
+    label="Low Quality Scene"
+    bind:selectedValue={$sceneSwitchSettings.lowQuality}
+    values={scenes.map((s) => s.sceneName)}
+  />
+  <ValueSelect
+    label="BRB Scene"
+    bind:selectedValue={$sceneSwitchSettings.brb}
+    values={scenes.map((s) => s.sceneName)}
+  />
   <label for="rateThreshold">Rate Threshold (Mb/s)</label>
   <input
     type="number"

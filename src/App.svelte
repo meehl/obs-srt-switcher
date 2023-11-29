@@ -1,8 +1,11 @@
 <script lang="ts" context="module">
   import { Switcher } from './switcher'
-  import { srtStats, startPolling } from './srt'
+  import { SrtPoller, srtStats } from './srt'
   import { tmiCommand } from './tmi'
   import { srtSettings } from './store'
+  import { currentCollection } from './obs'
+  import { sceneSwitchSettings } from './store'
+  import { get } from 'svelte/store'
 
   const switcher = new Switcher()
   srtStats.subscribe((stats) => {
@@ -12,8 +15,25 @@
     switcher.handleChatCommand(command)
   })
 
+  const srtPoller = new SrtPoller()
   srtSettings.subscribe((settings) => {
-    startPolling(settings)
+    srtPoller.updateSettings(settings)
+  })
+
+  currentCollection.subscribe((collection) => {
+    if (collection === get(sceneSwitchSettings).collection) {
+      srtPoller.start()
+    } else {
+      srtPoller.stop()
+    }
+  })
+
+  sceneSwitchSettings.subscribe((sceneSettings) => {
+    if (get(currentCollection) === sceneSettings.collection) {
+      srtPoller.start()
+    } else {
+      srtPoller.stop()
+    }
   })
 </script>
 
@@ -28,7 +48,6 @@
     obsDisconnect,
     currentScene,
     scenes,
-    currentCollection,
     collections,
   } from './obs'
   import { tmiConnected, tmiConnectionError, tmiConnect, tmiDisconnect } from './tmi'
@@ -54,7 +73,7 @@
     <p>Scenes: {$scenes.map((s) => s.sceneName).join(', ')}</p>
     <p>Current Collection: {$currentCollection}</p>
     <p>Collections: {$collections.join(', ')}</p>
-    <SceneSettingsInput scenes={$scenes} />
+    <SceneSettingsInput scenes={$scenes} collections={$collections} />
     <SrtSettingsInput />
     {#if !$tmiConnected}
       <TmiLogin error={$tmiConnectionError} on:connect={handleTmiLogin} />

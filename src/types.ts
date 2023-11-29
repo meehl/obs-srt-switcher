@@ -10,6 +10,7 @@ export type ObsScene = {
 }
 
 export type SceneSwitchSettings = {
+  collection: string
   main: string
   lowQuality: string
   brb: string

@@ -27,6 +27,7 @@ const autoLogin = async () => {
 autoLogin()
 
 obs.on('ConnectionClosed', () => {
+  console.error('OBS connection closed!')
   obsConnected.set(false)
 })
 
