@@ -131,6 +131,8 @@ export const commandTypes = [
   'scenes',
   'collection',
   'scene',
+  'rate',
+  'rtt',
 ] as const
 
 export type ChatCommandType = (typeof commandTypes)[number]

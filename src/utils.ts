@@ -15,3 +15,8 @@ export const isAllowedToRun = (sender: ChatCommandSender, botSettings: BotSettin
   if (botSettings.privilegedUsers.includes(sender.name)) return true
   return false
 }
+
+export const parseNumber = (s: string): number | undefined => {
+  const n = Number(s)
+  return isNaN(n) ? undefined : n
+}

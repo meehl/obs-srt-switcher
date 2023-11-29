@@ -12,7 +12,7 @@ import {
 } from './obs'
 import { botSettings, sceneSwitchSettings } from './store'
 import type { ChatCommand, SrtStats } from './types'
-import { isAllowedToRun } from './utils'
+import { isAllowedToRun, parseNumber } from './utils'
 import { sendMessage } from './tmi'
 
 export class Switcher {
@@ -47,20 +47,23 @@ export class Switcher {
     const channel = command.channel
 
     switch (command.type) {
-      case 'start':
+      case 'start': {
         startStream()
           .then(() => sendMessage(channel, 'Started stream!'))
           .catch(() => sendMessage(channel, 'Unable to start stream!'))
         break
-      case 'stop':
+      }
+      case 'stop': {
         stopStream()
           .then(() => sendMessage(channel, 'Stopped stream!'))
           .catch(() => sendMessage(channel, 'Unable to stop stream!'))
         break
-      case 'collections':
+      }
+      case 'collections': {
         sendMessage(channel, `Available collections: ${get(collections).join(', ')}`)
         break
-      case 'scenes':
+      }
+      case 'scenes': {
         sendMessage(
           channel,
           `Available scenes: ${get(scenes)
@@ -68,7 +71,8 @@ export class Switcher {
             .join(', ')}`,
         )
         break
-      case 'collection':
+      }
+      case 'collection': {
         const collectionName = command.args.join(' ')
         if (collectionName) {
           switchCollection(collectionName)
@@ -78,7 +82,8 @@ export class Switcher {
           sendMessage(channel, `Current collection: ${get(currentCollection)}`)
         }
         break
-      case 'scene':
+      }
+      case 'scene': {
         const sceneName = command.args.join(' ')
         if (sceneName) {
           switchScene(sceneName)
@@ -88,6 +93,43 @@ export class Switcher {
           sendMessage(channel, `Current scene: ${get(currentScene)}`)
         }
         break
+      }
+      case 'rate': {
+        const value = parseNumber(command.args[0])
+        if (value) {
+          sceneSwitchSettings.update((s) => {
+            return {
+              ...s,
+              rateThreshold: value,
+            }
+          })
+          sendMessage(channel, `Set rate threshold to: ${value}Mb/s`)
+        } else {
+          sendMessage(
+            channel,
+            `Current rate threshold: ${get(sceneSwitchSettings).rateThreshold}Mb/s`,
+          )
+        }
+        break
+      }
+      case 'rtt': {
+        const value = parseNumber(command.args[0])
+        if (value) {
+          sceneSwitchSettings.update((s) => {
+            return {
+              ...s,
+              rttThreshold: value,
+            }
+          })
+          sendMessage(channel, `Set rtt threshold to: ${value}Mb/s`)
+        } else {
+          sendMessage(
+            channel,
+            `Current rtt threshold: ${get(sceneSwitchSettings).rttThreshold}Mb/s`,
+          )
+        }
+        break
+      }
     }
   }
 }
