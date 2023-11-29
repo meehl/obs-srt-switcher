@@ -141,6 +141,25 @@ export const switchScene = (sceneName: string) => {
   })
 }
 
+export const switchCollection = (sceneCollectionName: string) => {
+  return new Promise<void>((resolve, reject) => {
+    if (sceneCollectionName === get(currentCollection)) {
+      resolve()
+    } else {
+      obs
+        .call('SetCurrentSceneCollection', { sceneCollectionName })
+        .then(() => {
+          console.log(`Switched current collection to ${sceneCollectionName}`)
+          resolve()
+        })
+        .catch((e) => {
+          console.error(e)
+          reject()
+        })
+    }
+  })
+}
+
 export const startStream = () => {
   return obs.call('StartStream')
 }

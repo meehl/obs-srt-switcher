@@ -1,5 +1,15 @@
 import { get } from 'svelte/store'
-import { obsConnected, startStream, stopStream, switchScene, collections, scenes } from './obs'
+import {
+  obsConnected,
+  startStream,
+  stopStream,
+  switchScene,
+  switchCollection,
+  collections,
+  scenes,
+  currentCollection,
+  currentScene,
+} from './obs'
 import { botSettings, sceneSwitchSettings } from './store'
 import type { ChatCommand, SrtStats } from './types'
 import { isAllowedToRun } from './utils'
@@ -57,6 +67,26 @@ export class Switcher {
             .map((s) => s.sceneName)
             .join(', ')}`,
         )
+        break
+      case 'collection':
+        const collectionName = command.args.join(' ')
+        if (collectionName) {
+          switchCollection(collectionName)
+            .then(() => sendMessage(channel, `Switched collection to: ${collectionName}`))
+            .catch(() => sendMessage(channel, 'Unable to switch collection!'))
+        } else {
+          sendMessage(channel, `Current collection: ${get(currentCollection)}`)
+        }
+        break
+      case 'scene':
+        const sceneName = command.args.join(' ')
+        if (sceneName) {
+          switchScene(sceneName)
+            .then(() => sendMessage(channel, `Switched scene to: ${sceneName}`))
+            .catch(() => sendMessage(channel, 'Unable to switch scene!'))
+        } else {
+          sendMessage(channel, `Current scene: ${get(currentScene)}`)
+        }
         break
     }
   }
