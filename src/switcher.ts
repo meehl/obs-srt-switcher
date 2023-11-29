@@ -1,5 +1,5 @@
 import { get } from 'svelte/store'
-import { obsConnected, startStream, stopStream, switchScene } from './obs'
+import { obsConnected, startStream, stopStream, switchScene, collections, scenes } from './obs'
 import { botSettings, sceneSwitchSettings } from './store'
 import type { ChatCommand, SrtStats } from './types'
 import { isAllowedToRun } from './utils'
@@ -46,6 +46,17 @@ export class Switcher {
         stopStream()
           .then(() => sendMessage(channel, 'Stopped stream!'))
           .catch(() => sendMessage(channel, 'Unable to stop stream!'))
+        break
+      case 'collections':
+        sendMessage(channel, `Available collections: ${get(collections).join(', ')}`)
+        break
+      case 'scenes':
+        sendMessage(
+          channel,
+          `Available scenes: ${get(scenes)
+            .map((s) => s.sceneName)
+            .join(', ')}`,
+        )
         break
     }
   }

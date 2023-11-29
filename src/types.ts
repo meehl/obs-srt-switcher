@@ -124,7 +124,7 @@ export type ChatCommandSender = {
   isModerator: boolean
 }
 
-export const commandTypes = ['start', 'stop'] as const
+export const commandTypes = ['start', 'stop', 'collections', 'scenes'] as const
 
 export type ChatCommandType = (typeof commandTypes)[number]
 
