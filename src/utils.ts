@@ -20,3 +20,20 @@ export const parseNumber = (s: string): number | undefined => {
   const n = Number(s)
   return isNaN(n) ? undefined : n
 }
+
+export const parseBoolean = (s: string): boolean | undefined => {
+  switch (s) {
+    case 'true':
+    case 'on':
+    case 'yes':
+    case '1':
+      return true
+    case 'false':
+    case 'off':
+    case 'no':
+    case '0':
+      return false
+    default:
+      return undefined
+  }
+}

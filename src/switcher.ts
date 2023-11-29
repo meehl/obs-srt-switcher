@@ -12,11 +12,15 @@ import {
 } from './obs'
 import { botSettings, sceneSwitchSettings } from './store'
 import type { ChatCommand, SrtStats } from './types'
-import { isAllowedToRun, parseNumber } from './utils'
+import { isAllowedToRun, parseBoolean, parseNumber } from './utils'
 import { sendMessage } from './tmi'
 
 export class Switcher {
-  constructor() {}
+  forceBrb: boolean
+
+  constructor() {
+    this.forceBrb = false
+  }
 
   handleStats(stats: SrtStats | null) {
     if (!get(obsConnected)) return
@@ -25,7 +29,9 @@ export class Switcher {
 
     let switchTo: string | null = null
 
-    if (stats === null) {
+    if (this.forceBrb) {
+      switchTo = settings.brb
+    } else if (stats === null) {
       switchTo = settings.brb
     } else if (stats.MbpsRecvRate < settings.rateThreshold) {
       console.log(`Low SendRate detected: ${stats.MbpsRecvRate}Mb/s`)
@@ -127,6 +133,16 @@ export class Switcher {
             channel,
             `Current rtt threshold: ${get(sceneSwitchSettings).rttThreshold}Mb/s`,
           )
+        }
+        break
+      }
+      case 'forcebrb': {
+        const mode = parseBoolean(command.args[0])
+        if (mode === undefined) {
+          sendMessage(channel, `Current forceBrb mode: ${this.forceBrb ? 'on' : 'off'}`)
+        } else {
+          this.forceBrb = mode
+          sendMessage(channel, `Set forceBrb to: ${mode ? 'on' : 'off'}`)
         }
         break
       }
