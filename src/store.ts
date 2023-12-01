@@ -1,5 +1,6 @@
 import { writable, get } from 'svelte/store'
-import type { BotSettings, SceneSwitchSettings, SrtSettings } from './types'
+import type { BotSettings, SceneSwitchSettings, SrtSettings, TmiLoginInfo } from './types'
+import { parseBoolean, parseNumber } from './utils'
 
 export const storedWritable = <T>(key: string, initialValue: T) => {
   const stored = localStorage.getItem(key)
@@ -29,8 +30,25 @@ export const storedWritable = <T>(key: string, initialValue: T) => {
   }
 }
 
+// set default values based on search params
+const params = new URLSearchParams(window.location.search)
+
+const tmiLoggedIn = localStorage.getItem('tmiLoginInfo') !== null
+const tmiUsername = params.get('tmiuser')
+const tmiToken = params.get('tmitoken')
+const tmiChannel = params.get('tmichannel')
+if (!tmiLoggedIn && tmiUsername && tmiToken && tmiChannel) {
+  const tmiLoginInfo: TmiLoginInfo = {
+    username: tmiUsername,
+    oauthToken: tmiToken,
+    channel: tmiChannel,
+    remember: true,
+  }
+  localStorage.setItem('tmiLoginInfo', JSON.stringify(tmiLoginInfo))
+}
+
 export const sceneSwitchSettings = storedWritable<SceneSwitchSettings>('sceneSwitchSettings', {
-  collection: '',
+  collection: 'irl',
   main: 'main',
   lowQuality: 'low_quality',
   brb: 'brb',
@@ -39,12 +57,12 @@ export const sceneSwitchSettings = storedWritable<SceneSwitchSettings>('sceneSwi
 })
 
 export const srtSettings = storedWritable<SrtSettings>('srtSettings', {
-  streamUrl: '',
-  streamId: 'publish/test',
-  pollingInterval: 5000,
+  streamUrl: params.get('srturl') ?? '',
+  streamId: params.get('srtid') ?? 'publish/test',
+  pollingInterval: parseNumber(params.get('srtpoll') ?? '') ?? 5000,
 })
 
 export const botSettings = storedWritable<BotSettings>('botSettings', {
-  allowModerators: false,
-  privilegedUsers: [],
+  allowModerators: parseBoolean(params.get('botallowmods') ?? '') ?? false,
+  privilegedUsers: params.getAll('botadmins'),
 })
