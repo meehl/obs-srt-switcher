@@ -27,8 +27,10 @@
 </script>
 
 <form use:form on:submit|preventDefault={formSubmit} class="settings">
-  <h1>OBS Websocket</h1>
-  <p>Password can be found in OBS under Tools -> Websocket Server Settings -> Show Connect Info</p>
+  <p>
+    Password and Port can be found in OBS under Tools -> Websocket Server Settings -> Show Connect
+    Info.
+  </p>
 
   <label for="ip">IP</label>
   <input type="text" name="ip" use:validators={[required]} />
@@ -43,7 +45,7 @@
   <Hint for="password" on="required">{requiredMessage}</Hint>
 
   <label for="remember">Remember Login?</label>
-  <ToggleSwitch id="remember" name="remember" />
+  <ToggleSwitch id="remember" name="remember" checked={true} />
 
   {#if error}
     <p id="connectionerror">{error}</p>

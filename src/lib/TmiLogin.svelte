@@ -41,7 +41,7 @@
   <Hint for="channel" on="required">{requiredMessage}</Hint>
 
   <label for="remember">Remember Login?</label>
-  <ToggleSwitch id="remember" name="remember" />
+  <ToggleSwitch id="remember" name="remember" checked={true} />
 
   {#if error}
     <p id="connectionerror">{error}</p>
