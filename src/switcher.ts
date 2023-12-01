@@ -101,15 +101,50 @@ export class Switcher {
         }
         break
       }
-      case 'rate': {
+      case 'sw_col': {
+        const collection = command.args.join(' ')
+        if (collection) {
+          sceneSwitchSettings.update((s) => ({ ...s, collection }))
+          sendMessage(channel, `Set srt collection to: ${collection}`)
+        } else {
+          sendMessage(channel, `Current srt collection: ${get(sceneSwitchSettings).collection}`)
+        }
+        break
+      }
+      case 'sw_main': {
+        const main = command.args.join(' ')
+        if (main) {
+          sceneSwitchSettings.update((s) => ({ ...s, main }))
+          sendMessage(channel, `Set main scene to: ${main}`)
+        } else {
+          sendMessage(channel, `Current main scene: ${get(sceneSwitchSettings).main}`)
+        }
+        break
+      }
+      case 'sw_lq': {
+        const low_quality = command.args.join(' ')
+        if (low_quality) {
+          sceneSwitchSettings.update((s) => ({ ...s, low_quality }))
+          sendMessage(channel, `Set low quality scene to: ${low_quality}`)
+        } else {
+          sendMessage(channel, `Current low quality scene: ${get(sceneSwitchSettings).lowQuality}`)
+        }
+        break
+      }
+      case 'sw_brb': {
+        const brb = command.args.join(' ')
+        if (brb) {
+          sceneSwitchSettings.update((s) => ({ ...s, brb }))
+          sendMessage(channel, `Set brb scene to: ${brb}`)
+        } else {
+          sendMessage(channel, `Current brb scene: ${get(sceneSwitchSettings).brb}`)
+        }
+        break
+      }
+      case 'sw_rate': {
         const value = parseNumber(command.args[0])
         if (value) {
-          sceneSwitchSettings.update((s) => {
-            return {
-              ...s,
-              rateThreshold: value,
-            }
-          })
+          sceneSwitchSettings.update((s) => ({ ...s, rateThreshold: value }))
           sendMessage(channel, `Set rate threshold to: ${value}Mb/s`)
         } else {
           sendMessage(
@@ -119,15 +154,10 @@ export class Switcher {
         }
         break
       }
-      case 'rtt': {
+      case 'sw_rtt': {
         const value = parseNumber(command.args[0])
         if (value) {
-          sceneSwitchSettings.update((s) => {
-            return {
-              ...s,
-              rttThreshold: value,
-            }
-          })
+          sceneSwitchSettings.update((s) => ({ ...s, rttThreshold: value }))
           sendMessage(channel, `Set rtt threshold to: ${value}Mb/s`)
         } else {
           sendMessage(
