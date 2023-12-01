@@ -13,7 +13,7 @@
     ip: { initial: 'localhost' },
     port: { initial: '4455' },
     password: { initial: '' },
-    remember: {},
+    remember: { initial: 'checked' },
   })
 
   const formSubmit = () => {

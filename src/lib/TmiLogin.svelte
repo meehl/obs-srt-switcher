@@ -13,7 +13,7 @@
     username: { initial: '' },
     oauthToken: { initial: '' },
     channel: { initial: '' },
-    remember: {},
+    remember: { initial: 'checked' },
   })
 
   const formSubmit = () => {
