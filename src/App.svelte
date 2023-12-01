@@ -67,6 +67,17 @@
   {#if !$obsConnected}
     <ObsLogin error={$obsConnectionError} on:connect={handleObsLogin} />
   {:else}
+    <div>
+      <p>
+        SRT Status:
+        {#if $srtStats}
+          <span style="color: green;">Online</span>
+          ({$srtStats.MbpsRecvRate.toFixed(2)}Mb/s | {$srtStats.MsRTT.toFixed(2)}ms)
+        {:else}
+          <span style="color: red;">Offline</span>
+        {/if}
+      </p>
+    </div>
     <details>
       <summary>Switcher Settings</summary>
       <SwitcherSettingsInput scenes={$scenes} collections={$collections} />
